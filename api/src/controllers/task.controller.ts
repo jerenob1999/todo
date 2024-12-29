@@ -10,7 +10,6 @@ export class TaskController {
   ) {}
   async createTask(req: Request<{}, {}, TaskDTO>, res: Response) {
     const task = req.body;
-
     const validation = taskSchema.safeParse(req.body);
 
     if (!validation.success) {
@@ -52,7 +51,32 @@ export class TaskController {
     }
   }
 
-  async updateTask() {}
+  async updateTask(req: Request<string, {}, TaskDTO>, res: Response) {
+    const task = req.body;
+    const id = req.params;
+    const validation = taskSchema.safeParse(req.body);
 
-  async deleteTask() {}
+    if (!validation.success) {
+      throw this.httpResponse.Error(res, validation.error.issues);
+    }
+
+    try {
+      const data = await this.taskService.updateTask(id, task);
+      return this.httpResponse.Ok(res, data);
+    } catch (error) {
+      console.error(error);
+      return this.httpResponse.Error(res, error);
+    }
+  }
+
+  async deleteTaskById(req: Request<string>, res: Response) {
+    const id = req.params;
+    try {
+      const data = await this.taskService.deleteTaskById(id);
+      return this.httpResponse.Ok(res, data);
+    } catch (error) {
+      console.error(error);
+      return this.httpResponse.Error(res, error);
+    }
+  }
 }
