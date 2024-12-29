@@ -1,14 +1,29 @@
-import { Table, Column, Model, HasMany } from "sequelize-typescript";
+import { Table, Column, Model, HasMany, DataType } from "sequelize-typescript";
+import { CreationOptional } from "sequelize";
 import { Task } from "./task.model";
 
-@Table
+@Table({
+  tableName: "user",
+  name: { singular: "user" },
+})
 export class User extends Model {
-  @Column
-  email!: string;
+  @Column({
+    primaryKey: true,
+    type: DataType.STRING,
+    defaultValue: DataType.UUIDV4,
+  })
+  declare id: string;
 
   @Column
-  password!: string;
+  declare email: string;
+
+  @Column
+  declare password: string;
 
   @HasMany(() => Task)
-  tasks!: Task[];
+  declare tasks: Task[];
+
+  declare createdAt: CreationOptional<Date>;
+
+  declare updatedAt: CreationOptional<Date>;
 }
