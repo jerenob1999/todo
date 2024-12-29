@@ -29,7 +29,6 @@ export class TaskController {
     const id = req.params;
     try {
       const data = await this.taskService.getAllTaskByUserId(id);
-      console.log(data);
       return this.httpResponse.Ok(res, data);
     } catch (error) {
       console.error(error);
@@ -38,6 +37,7 @@ export class TaskController {
   }
 
   async getTaskById(req: Request, res: Response) {
+    console.log(req.oidc.user);
     const { id } = req.params;
     try {
       const data = await this.taskService.findTaskById(id);
@@ -51,9 +51,9 @@ export class TaskController {
     }
   }
 
-  async updateTask(req: Request<string, {}, TaskDTO>, res: Response) {
-    const task = req.body;
-    const id = req.params;
+  async updateTask(req: Request, res: Response) {
+    const task: TaskDTO = req.body;
+    const id = req.params.id;
     const validation = taskSchema.safeParse(req.body);
 
     if (!validation.success) {
@@ -69,8 +69,8 @@ export class TaskController {
     }
   }
 
-  async deleteTaskById(req: Request<string>, res: Response) {
-    const id = req.params;
+  async deleteTaskById(req: Request, res: Response) {
+    const id = req.params.id;
     try {
       const data = await this.taskService.deleteTaskById(id);
       return this.httpResponse.Ok(res, data);

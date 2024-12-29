@@ -1,7 +1,6 @@
 import { SequelizeOptions, Sequelize } from "sequelize-typescript";
 import dotenv from "dotenv";
 import { Task } from "../models/task.model";
-import { User } from "../models/user.model";
 
 dotenv.config({
   path:
@@ -16,7 +15,7 @@ const Config: SequelizeOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  models: [Task, User],
+  models: [Task],
   sync: {
     force: true,
   },

@@ -1,3 +1,4 @@
+import { TaskRouter } from "./src/routes/task.router";
 import { auth } from "express-openid-connect";
 import { ConfigServer } from "./src/config/config";
 import express, { Application } from "express";
@@ -7,14 +8,14 @@ import cors from "cors";
 
 class Server extends ConfigServer {
   private app: Application;
-  private port: string | number;
+  private port = this.getNumberEnv("PORT");
+  private authConfig = this.getAuthConfig();
 
   constructor() {
     super();
     this.app = express();
     this.app.use(morgan("dev"));
-    this.port = process.env.PORT || 3000;
-    // this.dbConnect();
+    this.dbConnect();
     this.middlewares();
     this.app.use(
       cors({
@@ -23,6 +24,8 @@ class Server extends ConfigServer {
         credentials: true,
       })
     );
+    this.app.use(auth(this.authConfig));
+    this.app.use("/api", this.routers());
   }
 
   private middlewares(): void {
@@ -37,6 +40,10 @@ class Server extends ConfigServer {
       .catch((err) => {
         console.error(err);
       });
+  }
+
+  routers(): Array<Router> {
+    return [new TaskRouter().router];
   }
 
   public listen(): void {

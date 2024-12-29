@@ -1,13 +1,5 @@
-import {
-  Table,
-  Column,
-  Model,
-  ForeignKey,
-  BelongsTo,
-  DataType,
-} from "sequelize-typescript";
+import { Table, Column, Model, DataType } from "sequelize-typescript";
 import { CreationOptional } from "sequelize";
-import { User } from "./user.model";
 
 @Table({
   tableName: "task",
@@ -39,14 +31,10 @@ export class Task extends Model {
   })
   declare description: string;
 
-  @ForeignKey(() => User)
   @Column({
     allowNull: false,
   })
   declare userId: string;
-
-  @BelongsTo(() => User)
-  declare user: User;
 
   declare createdAt: CreationOptional<Date>;
 
