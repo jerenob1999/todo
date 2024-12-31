@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import Logo from "./logo";
 
 function Footer() {
   return (
@@ -13,10 +14,18 @@ function Footer() {
         color: "white",
       }}
     >
-      <Typography variant="body2">
-        © {new Date().getFullYear()} To-Do List App. Todos los derechos
-        reservados.
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Logo />
+        <Typography variant="body2">
+          © {new Date().getFullYear()} Todos los derechos reservados.
+        </Typography>
+      </Box>
     </Box>
   );
 }
