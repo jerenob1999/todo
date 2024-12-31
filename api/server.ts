@@ -1,5 +1,5 @@
 import { TaskRouter } from "./src/routes/task.router";
-import { auth } from "express-openid-connect";
+import { auth, ConfigParams } from "express-openid-connect";
 import { ConfigServer } from "./src/config/config";
 import express, { Application } from "express";
 import { Router } from "express";
@@ -9,7 +9,14 @@ import cors from "cors";
 class Server extends ConfigServer {
   private app: Application;
   private port = this.getNumberEnv("PORT");
-  private authConfig = this.getAuthConfig();
+  private authConfig: ConfigParams = {
+    authRequired: false,
+    auth0Logout: true,
+    secret: this.getEnvironment("AUTH0_SECRET"),
+    baseURL: this.getEnvironment("AUTH_0_BASE_URL"),
+    clientID: this.getEnvironment("AUTH0_CLIENT_ID"),
+    issuerBaseURL: this.getEnvironment("AUTH0_ISSUER_BASE_URL"),
+  };
 
   constructor() {
     super();

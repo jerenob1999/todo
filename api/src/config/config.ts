@@ -6,17 +6,6 @@ export abstract class ConfigServer {
     return AppDataSource.authenticate();
   }
 
-  public getAuthConfig(): ConfigParams {
-    return {
-      authRequired: false,
-      auth0Logout: true,
-      secret: this.getEnvironment("AUTH0_SECRET"),
-      baseURL: this.getEnvironment("AUTH_0_BASE_URL"),
-      clientID: this.getEnvironment("AUTH0_CLIENT_ID"),
-      issuerBaseURL: this.getEnvironment("AUTH0_ISSUER_BASE_URL"),
-    };
-  }
-
   public getNumberEnv(k: string): number {
     return Number(this.getEnvironment(k));
   }
