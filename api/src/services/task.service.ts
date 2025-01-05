@@ -10,8 +10,8 @@ export class TaskService {
     return Task.findOne({ where: { userId: id } });
   }
 
-  async getAllTaskByUserId(id: string): Promise<Task[] | null> {
-    return Task.findAll({ where: { userId: id } });
+  async getAllTaskByUserId(): Promise<Task[] | null> {
+    return Task.findAll();
   }
 
   async deleteTaskById(id: string): Promise<string> {

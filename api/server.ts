@@ -1,7 +1,8 @@
 import { TaskRouter } from "./src/routes/task.router";
-import { auth, ConfigParams } from "express-openid-connect";
+import { auth } from "express-oauth2-jwt-bearer";
 import { ConfigServer } from "./src/config/config";
 import express, { Application } from "express";
+import { checkJwt } from "./src/middlewares/auth.middleware";
 import { Router } from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -9,13 +10,11 @@ import cors from "cors";
 class Server extends ConfigServer {
   private app: Application;
   private port = this.getNumberEnv("PORT");
-  private authConfig: ConfigParams = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: this.getEnvironment("AUTH0_SECRET"),
-    baseURL: this.getEnvironment("AUTH_0_BASE_URL"),
-    clientID: this.getEnvironment("AUTH0_CLIENT_ID"),
+  private baseUrl = this.getEnvironment("AUTH0_BASE_URL");
+  private jwtCheck = {
+    audience: this.getEnvironment("AUTH0_AUDIENCE"),
     issuerBaseURL: this.getEnvironment("AUTH0_ISSUER_BASE_URL"),
+    tokenSigningAlg: "RS256",
   };
 
   constructor() {
@@ -26,12 +25,11 @@ class Server extends ConfigServer {
     this.middlewares();
     this.app.use(
       cors({
-        origin: true,
+        origin: this.baseUrl,
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
         credentials: true,
       })
     );
-    this.app.use(auth(this.authConfig));
     this.app.use("/api", this.routers());
   }
 

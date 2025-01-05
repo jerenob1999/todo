@@ -18,7 +18,7 @@ export class TaskRouter extends BaseRouter<TaskController> {
       }
     );
 
-    this.router.get("/todos", async (req: Request<string>, res: Response) => {
+    this.router.get("/todos", async (req: Request, res: Response) => {
       await this.controller.getAllTaskByUserId(req, res);
     });
 

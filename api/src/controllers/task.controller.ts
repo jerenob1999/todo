@@ -25,10 +25,10 @@ export class TaskController {
     }
   }
 
-  async getAllTaskByUserId(req: Request<string>, res: Response) {
+  async getAllTaskByUserId(req: Request, res: Response) {
     const id = req.params;
     try {
-      const data = await this.taskService.getAllTaskByUserId(id);
+      const data = await this.taskService.getAllTaskByUserId();
       return this.httpResponse.Ok(res, data);
     } catch (error) {
       console.error(error);
